@@ -7,18 +7,15 @@ import (
 	"time"
 )
 
-type Item struct {
-	Room string
-	Time string
-}
-
 func main() {
+	k := "s1230008"
 	f := firego.New("https://sao-unv.firebaseio.com", nil)
 	firego.TimeoutDuration = time.Minute
 
-	var v Item
-	if err := f.Child("s1230008").Value(&v); err != nil {
+	var v map[string]interface{}
+	if err := f.Child(k).Value(&v); err != nil {
 		log.Fatal(err)
 	}
-	fmt.Printf("%s\n", v)
+	fmt.Printf("%s\n", v["room"])
+	fmt.Printf("%s\n", v["timestamp"])
 }
