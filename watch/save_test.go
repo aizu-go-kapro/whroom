@@ -4,6 +4,7 @@ import (
 	"testing"
 	"time"
 
+	"fmt"
 	"github.com/zabawaba99/firego/firetest"
 )
 
@@ -17,14 +18,16 @@ func TestSave(t *testing.T) {
 	if err := Save(server.URL, "s1220004", M1, tm); err != nil {
 		t.Fatal(err)
 	}
-
 	v := server.Get("s1220004")
-	s, ok := v.(string)
+	s, ok := v.(map[string]interface{})
 	if !ok {
 		t.Fatalf("mismatch type of value: %#+v", v)
 	}
 
-	if s != "M1" {
+	if s["room"] != "M1" {
 		t.Fatalf("expected M1 but %s", s)
+	}
+	if s["timestamp"] != "2018-01-01T01:00:00Z" {
+		t.Fatalf("Not True")
 	}
 }
