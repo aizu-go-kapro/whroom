@@ -17,7 +17,7 @@ func (f *Student) Help() string {
 
 func (f *Student) Run(args []string) int {
 	if len(args) < 1 {
-		fmt.Printf("Please studnet number\n")
+		fmt.Printf("Please input studnet number\nex. whroom student s1240215")
 		return 0
 	}
 	k := args[0]
@@ -38,7 +38,7 @@ func (f *Student) Synopsis() string {
 }
 
 func main() {
-	c := cli.NewCLI("whroom", "1.0.0")
+	c := cli.NewCLI("whroom", "0.1.0")
 	c.Args = os.Args[1:]
 	c.Commands = map[string]cli.CommandFactory{
 		"student": func() (cli.Command, error) {
