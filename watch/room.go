@@ -1,4 +1,4 @@
-package main
+package watch
 
 type Room int8
 
