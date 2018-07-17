@@ -12,7 +12,7 @@ func main() {
 	c := cli.NewCLI("whroom", "0.1.0")
 	c.Args = os.Args[1:]
 	c.Commands = map[string]cli.CommandFactory{
-		"student": func() (cli.Command, error) {
+		"get": func() (cli.Command, error) {
 			return &get.Command{}, nil
 		},
 	}
