@@ -11,12 +11,12 @@ import (
 type Command struct{}
 
 func (f *Command) Help() string {
-	return "Usage: whroom student <student_id>"
+	return "Usage: whroom get <student_id>"
 }
 
 func (f *Command) Run(args []string) int {
 	if len(args) < 1 {
-		log.Println("Please input studnet number\nex. whroom student s1240215")
+		log.Println("Please input studnet id\nex. whroom get s1240215")
 		return 1
 	}
 	k := args[0]
