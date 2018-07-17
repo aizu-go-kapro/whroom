@@ -2,22 +2,48 @@ package main
 
 import (
 	"bytes"
+	"log"
 	"os/exec"
 	"strconv"
 	"strings"
 	"time"
-	"log"
 )
 
-var minimumThreshold = -100
-var wifiInterface = "wlp2s0"
+type AP struct {
+	BSSID  string
+	Signal int
+}
 
-func iw(out chan map[string]map[string]interface{}) {
-	s, _ := RunCommand(10*time.Second, "/sbin/iw dev "+wifiInterface+" scan -u")
+const minimumThreshold = -100
+
+func listAP(ifname string) []*AP {
+	c := make(chan map[string]map[string]int)
+	go iw(c, ifname)
+
+	var aps []*AP
+	for v := range c {
+		m, ok := v["wifi"]
+		if !ok {
+			continue
+		}
+
+		for bssid, signal := range m {
+			aps = append(aps, &AP{
+				BSSID:  bssid,
+				Signal: signal,
+			})
+		}
+	}
+
+	return aps
+}
+
+func iw(out chan map[string]map[string]int, ifname string) {
+	s, _ := RunCommand(10*time.Second, "/sbin/iw dev "+ifname+" scan -u")
 	name := ""
 	signal := 0
-	datas := make(map[string]map[string]interface{})
-	datas["wifi"] = make(map[string]interface{})
+	datas := make(map[string]map[string]int)
+	datas["wifi"] = make(map[string]int)
 	for _, line := range strings.Split(s, "\n") {
 		if strings.Contains(line, "(on") {
 			name = strings.Split(strings.Split(line, "(")[0], "BSS")[1]
@@ -41,6 +67,7 @@ func iw(out chan map[string]map[string]interface{}) {
 		}
 	}
 	out <- datas
+	close(out)
 }
 
 func RunCommand(tDuration time.Duration, commands string) (string, string) {
