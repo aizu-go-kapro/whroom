@@ -87,7 +87,7 @@ func getConfig() (*Config, error) {
 
 func getConfigFilePath() (string, bool) {
 	paths := []string{
-		filepath.Join(xdgbasedir.ConfigHome(), "whroom", "c.toml"),
+		filepath.Join(xdgbasedir.ConfigHome(), "whroom", "config.toml"),
 		filepath.Join(home.Dir(), ".whroom.toml"),
 	}
 	fmt.Println(paths)
