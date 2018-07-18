@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/aizu-go-kapro/whroom/get"
+	"github.com/aizu-go-kapro/whroom/watch"
 	"github.com/mitchellh/cli"
 )
 
@@ -14,6 +15,9 @@ func main() {
 	c.Commands = map[string]cli.CommandFactory{
 		"get": func() (cli.Command, error) {
 			return &get.Command{}, nil
+		},
+		"watch": func() (cli.Command, error) {
+			return &watch.Command{}, nil
 		},
 	}
 
