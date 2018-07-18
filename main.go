@@ -11,6 +11,7 @@ import (
 	"github.com/ktr0731/go-semver"
 	"github.com/ktr0731/go-updater"
 	"github.com/ktr0731/go-updater/brew"
+	"github.com/ktr0731/go-updater/github"
 	"github.com/mitchellh/cli"
 	"github.com/pkg/errors"
 )
@@ -19,7 +20,11 @@ const version = "0.1.0"
 
 func main() {
 	ctx := context.Background()
-	means, err := updater.NewMeans(brew.HomebrewMeans("aizu-go-kapro/whroom", "whroom"))
+	means, err := updater.SelectAvailableMeansFrom(
+		ctx,
+		brew.HomebrewMeans("aizu-go-kapro/whroom", "whroom"),
+		github.GitHubReleaseMeans("aizu-go-kapro", "whroom", github.TarDecompresser),
+	)
 	if err != nil {
 		fmt.Printf("could not create updater means. continue without update checking: %s\n", err)
 	} else {
