@@ -6,6 +6,7 @@ import (
 	"sort"
 	"time"
 
+	"github.com/k0kubun/pp"
 	"github.com/pkg/errors"
 )
 
@@ -42,7 +43,7 @@ func (c *Command) Synopsis() string {
 }
 
 var bssids = map[Room][]string{
-	M7:        {"6c:dd:30:37:39:ab", "6c:dd:30:37:39:af"},
+	M7:        {"6c:dd:30:37:39:ab", "6c:dd:30:37:39:af", "6c:dd:30:37:39:a2"},
 	S1:        {"00:a7:42:ad:c3:6b", "00:a7:42:ad:c3:6f"},
 	S2:        {"6c:dd:30:49:6b:44", "6c:dd:30:49:6b:4f"},
 	S3:        {"4c:77:6d:17:76:24", "4c:77:6d:17:76:20"},
@@ -66,6 +67,7 @@ func getRoomFromAPs(aps []*AP) (Room, bool) {
 	sort.Slice(aps, func(i, j int) bool {
 		return aps[i].Signal < aps[j].Signal
 	})
+	pp.Print(aps)
 
 	var room Room
 	var ok bool
