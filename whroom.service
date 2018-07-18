@@ -1,0 +1,8 @@
+[Unit]
+Description=whroom
+
+[Service]
+KillMode=process
+ExecStart=/usr/bin/sudo whroom watch
+ExecStop=/usr/bin/sudo /usr/bin/killall whroom
+Restart=always
