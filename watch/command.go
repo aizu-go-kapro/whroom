@@ -49,7 +49,7 @@ func (c *Command) Help() string {
 	return `Usage: whroom watch
 
 Note: Usually you don't need to run this command from shell. To start location
-logging, ref docs.`  // TODO: add ref.
+logging, ref docs.` // TODO: add ref.
 }
 
 func (c *Command) Synopsis() string {
