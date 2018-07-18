@@ -12,10 +12,6 @@ jobs:
           name: build
           command: make build
 
-      - run:
-          name: test
-          command: make test
-
   update-release:
     working_directory: /go/src/github.com/aizu-go-kapro/whroom
     docker:
@@ -27,10 +23,6 @@ jobs:
       - run:
           name: install bump command
           command: go get github.com/ktr0731/go-semver/cmd/bump
-
-      - run:
-          name: install deps
-          command: make deps
 
       - run:
           name: update GitHub releases and update brew formula
