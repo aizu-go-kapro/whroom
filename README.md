@@ -28,7 +28,20 @@ $ go get github.com/aizu-go-kapro/whroom
 
 ### Put config file
 
-Some preferences are needed. ref. 
+Some preferences are needed.
+
+```
+firebase_url = "https://tmp.firebaseio.com"
+student_id = "s1230004"
+wifi_interface = "wlp2s0"
+duration = "1s"
+```
+
+The search paths for it:
+- ~/.whroom.toml
+- ~/.config/whroom/config.toml
+
+The `firebase_url` for UoA students: ref. [http://web-int.u-aizu.ac.jp/~s1230004/whroom.toml](http://web-int.u-aizu.ac.jp/~s1230004/whroom.toml)
 
 ### Make it daemon
 
