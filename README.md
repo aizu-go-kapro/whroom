@@ -75,6 +75,6 @@ $ sudo systemctl enable whroom.service
 
 ## Authors
 
-- [dennougorilla](github.com/dennougorilla)
-- [acomagu](github.com/acomagu)
-- [Ryo3939](github.com/Ryo3939)
+- [denougorilla](https://github.com/dennougorilla)
+- [acomagu](https://github.com/acomagu)
+- [Ryo3939](https://github.com/Ryo3939)
