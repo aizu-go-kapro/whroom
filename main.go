@@ -54,7 +54,9 @@ func main() {
 	c.Args = os.Args[1:]
 	c.Commands = map[string]cli.CommandFactory{
 		"get": func() (cli.Command, error) {
-			return &get.Command{}, nil
+			return &get.Command{
+				FirebaseURL: config.FirebaseURL,
+			}, nil
 		},
 		"watch": func() (cli.Command, error) {
 			return &watch.Command{
