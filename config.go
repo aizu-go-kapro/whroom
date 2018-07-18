@@ -1,12 +1,17 @@
-package watch
+package main
 
 import (
-	"errors"
+	"fmt"
 	"io"
+	"os"
+	"path/filepath"
 	"regexp"
 	"time"
 
 	"github.com/BurntSushi/toml"
+	"github.com/pkg/errors"
+	xdgbasedir "github.com/zchee/go-xdgbasedir"
+	"github.com/zchee/go-xdgbasedir/home"
 )
 
 var studentIDRegexp = regexp.MustCompile(`(s|m)\d{7}`)
@@ -59,4 +64,37 @@ func decodeConfig(r io.Reader) (*Config, error) {
 		WifiInterface: cu.WifiInterface,
 		Duration:      time.Duration(cu.Duration),
 	}, nil
+}
+
+func getConfig() (*Config, error) {
+	path, ok := getConfigFilePath()
+	if !ok {
+		return nil, errors.New("could not find config file.") // TODO: add reference
+	}
+
+	file, err := os.Open(path)
+	if err != nil {
+		return nil, errors.Wrapf(err, "could not open %s", path)
+	}
+
+	config, err := decodeConfig(file)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to parse the config file")
+	}
+
+	return config, nil
+}
+
+func getConfigFilePath() (string, bool) {
+	paths := []string{
+		filepath.Join(xdgbasedir.ConfigHome(), "whroom", "c.toml"),
+		filepath.Join(home.Dir(), ".whroom.toml"),
+	}
+	fmt.Println(paths)
+	for _, path := range paths {
+		if _, err := os.Stat(path); !os.IsNotExist(err) {
+			return path, true
+		}
+	}
+	return "", false
 }

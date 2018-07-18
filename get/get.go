@@ -8,19 +8,21 @@ import (
 	"github.com/zabawaba99/firego"
 )
 
-type Command struct{}
+type Command struct {
+	FirebaseURL string
+}
 
-func (f *Command) Help() string {
+func (c *Command) Help() string {
 	return "Usage: whroom get <student_id>"
 }
 
-func (f *Command) Run(args []string) int {
+func (c *Command) Run(args []string) int {
 	if len(args) < 1 {
 		log.Println("Please input studnet id\nex. whroom get s1240215")
 		return 1
 	}
 	k := args[0]
-	fg := firego.New("https://sao-unv.firebaseio.com", nil)
+	fg := firego.New(c.FirebaseURL, nil)
 	firego.TimeoutDuration = time.Minute
 
 	var v map[string]interface{}
@@ -39,6 +41,6 @@ func (f *Command) Run(args []string) int {
 	return 0
 }
 
-func (f *Command) Synopsis() string {
+func (c *Command) Synopsis() string {
 	return "Print the room where the student is in."
 }
