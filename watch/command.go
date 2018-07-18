@@ -12,23 +12,25 @@ import (
 	"github.com/zchee/go-xdgbasedir/home"
 )
 
-func main() {
+type Command struct{}
+
+func (c *Command) Run(args []string) int {
 	path, ok := getConfigFilePath()
 	if !ok {
 		fmt.Fprintln(os.Stderr, "could not find config file.") // TODO: add reference
-		os.Exit(1)
+		return 1
 	}
 
 	file, err := os.Open(path)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, errors.Wrapf(err, "could not open %s", path))
-		os.Exit(1)
+		return 1
 	}
 
 	config, err := decodeConfig(file)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, errors.Wrap(err, "failed to parse the config file"))
-		os.Exit(1)
+		return 1
 	}
 
 	for {
@@ -41,6 +43,17 @@ func main() {
 		}
 		<-time.After(config.Duration)
 	}
+}
+
+func (c *Command) Help() string {
+	return `Usage: whroom watch
+
+Note: Usually you don't need to run this command from shell. To start location
+logging, ref docs.`  // TODO: add ref.
+}
+
+func (c *Command) Synopsis() string {
+	return "Watch the Wi-Fi connection and send to server periodically."
 }
 
 func getConfigFilePath() (string, bool) {
