@@ -4,7 +4,6 @@ import (
 	"testing"
 	"time"
 
-	"fmt"
 	"github.com/zabawaba99/firego/firetest"
 )
 
