@@ -8,6 +8,7 @@ version:
 
 .PHONY: build
 build:
+	go get ./...
 	go build
 
 .PHONY: brew-update
