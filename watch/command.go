@@ -3,45 +3,29 @@ package watch
 import (
 	"fmt"
 	"os"
-	"path/filepath"
 	"sort"
 	"time"
 
 	"github.com/pkg/errors"
-	"github.com/zchee/go-xdgbasedir"
-	"github.com/zchee/go-xdgbasedir/home"
 )
 
-type Command struct{}
+type Command struct {
+	FirebaseURL   string
+	StudentID     string
+	WifiInterface string
+	Duration      time.Duration
+}
 
 func (c *Command) Run(args []string) int {
-	path, ok := getConfigFilePath()
-	if !ok {
-		fmt.Fprintln(os.Stderr, "could not find config file.") // TODO: add reference
-		return 1
-	}
-
-	file, err := os.Open(path)
-	if err != nil {
-		fmt.Fprintln(os.Stderr, errors.Wrapf(err, "could not open %s", path))
-		return 1
-	}
-
-	config, err := decodeConfig(file)
-	if err != nil {
-		fmt.Fprintln(os.Stderr, errors.Wrap(err, "failed to parse the config file"))
-		return 1
-	}
-
 	for {
-		room, ok := getRoomFromAPs(listAP(config.WifiInterface))
+		room, ok := getRoomFromAPs(listAP(c.WifiInterface))
 		if !ok {
 			fmt.Fprintln(os.Stderr, "could not estimate which room you are in")
 		}
-		if err := Save(config.FirebaseURL, config.StudentID, room, time.Now()); err != nil {
+		if err := Save(c.FirebaseURL, c.StudentID, room, time.Now()); err != nil {
 			fmt.Fprintln(os.Stderr, errors.Wrap(err, "could not save the room info"))
 		}
-		<-time.After(config.Duration)
+		<-time.After(c.Duration)
 	}
 }
 
@@ -54,20 +38,6 @@ logging, ref docs.` // TODO: add ref.
 
 func (c *Command) Synopsis() string {
 	return "Watch the Wi-Fi connection and send to server periodically."
-}
-
-func getConfigFilePath() (string, bool) {
-	paths := []string{
-		filepath.Join(xdgbasedir.ConfigHome(), "whroom", "config.toml"),
-		filepath.Join(home.Dir(), ".whroom.toml"),
-	}
-	fmt.Println(paths)
-	for _, path := range paths {
-		if _, err := os.Stat(path); !os.IsNotExist(err) {
-			return path, true
-		}
-	}
-	return "", false
 }
 
 var bssids = map[Room][]string{

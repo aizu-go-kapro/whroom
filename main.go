@@ -44,6 +44,12 @@ func main() {
 		}
 	}
 
+	config, err := getConfig()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+
 	c := cli.NewCLI("whroom", version)
 	c.Args = os.Args[1:]
 	c.Commands = map[string]cli.CommandFactory{
@@ -51,7 +57,12 @@ func main() {
 			return &get.Command{}, nil
 		},
 		"watch": func() (cli.Command, error) {
-			return &watch.Command{}, nil
+			return &watch.Command{
+				FirebaseURL:   config.FirebaseURL,
+				StudentID:     config.StudentID,
+				WifiInterface: config.WifiInterface,
+				Duration:      config.Duration,
+			}, nil
 		},
 	}
 
