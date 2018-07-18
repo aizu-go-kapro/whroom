@@ -18,10 +18,11 @@ const (
 	S8
 	CALL1
 	CALL2
-	iLab1
-	iLab2
-	std1
-	std2
-	std5
-	std6
+	ILab1
+	ILab2
+	Std1
+	Std2
+	Std5
+	Std6
+	Cafeteria
 )
