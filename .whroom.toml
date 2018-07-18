@@ -1,0 +1,4 @@
+firebase_url = "https://sao-unv.firebaseio.com"
+student_id = "s1230004"
+wifi_interface = "wlp2s0"
+duration = "1s"
