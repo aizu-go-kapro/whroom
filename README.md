@@ -61,7 +61,7 @@ For macOS user, the `.plist` file is provided.
 
 ```
 $ cp ./whroom.plist /Library/LaunchDaemons/
-$ launchd load /Library/LaunchDaemons/whroom.plist
+$ launchctl load /Library/LaunchDaemons/whroom.plist
 ```
 
 #### Load Systemd Unit file
