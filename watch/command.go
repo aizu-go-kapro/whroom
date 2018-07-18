@@ -21,6 +21,7 @@ func (c *Command) Run(args []string) int {
 		room, ok := getRoomFromAPs(listAP(c.WifiInterface))
 		if !ok {
 			fmt.Fprintln(os.Stderr, "could not estimate which room you are in")
+			continue
 		}
 		if err := Save(c.FirebaseURL, c.StudentID, room, time.Now()); err != nil {
 			fmt.Fprintln(os.Stderr, errors.Wrap(err, "could not save the room info"))
