@@ -3,6 +3,9 @@ Description=whroom
 
 [Service]
 KillMode=process
-ExecStart=/usr/bin/sudo whroom watch
+ExecStart=/usr/bin/sudo /home/user/go/bin/whroom --config=/home/user/.config/whroom/config.toml watch
 ExecStop=/usr/bin/sudo /usr/bin/killall whroom
 Restart=always
+
+[Install]
+WantedBy=multi-user.target

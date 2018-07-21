@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"flag"
 	"io"
 	"os"
 	"path/filepath"
@@ -15,6 +15,8 @@ import (
 )
 
 var studentIDRegexp = regexp.MustCompile(`(s|m)\d{7}`)
+
+var configPath = flag.String("config", "", `Location to local config file(default "~/.whroom.toml" or "~/.config/whroom/config.toml")`)
 
 type Config struct {
 	FirebaseURL   string
@@ -66,32 +68,37 @@ func decodeConfig(r io.Reader) (*Config, error) {
 	}, nil
 }
 
-func getConfig() (*Config, error) {
+func getConfig() (*Config, []string, error) {
+	flag.Parse()
 	path, ok := getConfigFilePath()
 	if !ok {
-		return nil, errors.New("could not find config file.") // TODO: add reference
+		return nil, nil, errors.New("could not find config file.") // TODO: add reference
 	}
 
 	file, err := os.Open(path)
 	if err != nil {
-		return nil, errors.Wrapf(err, "could not open %s", path)
+		return nil, nil, errors.Wrapf(err, "could not open %s", path)
 	}
 
 	config, err := decodeConfig(file)
 	if err != nil {
-		return nil, errors.Wrap(err, "failed to parse the config file")
+		return nil, nil, errors.Wrap(err, "failed to parse the config file")
 	}
 
-	return config, nil
+	return config, flag.Args(), nil
 }
 
 func getConfigFilePath() (string, bool) {
 	paths := []string{
 		filepath.Join(xdgbasedir.ConfigHome(), "whroom", "config.toml"),
 		filepath.Join(home.Dir(), ".whroom.toml"),
+		*configPath,
 	}
-	fmt.Println(paths)
 	for _, path := range paths {
+		if path == "" {
+			continue
+		}
+
 		if _, err := os.Stat(path); !os.IsNotExist(err) {
 			return path, true
 		}
