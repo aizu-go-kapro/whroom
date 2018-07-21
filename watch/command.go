@@ -18,7 +18,7 @@ type Command struct {
 }
 
 func (c *Command) Run(args []string) int {
-	for {
+	for range time.Tick(c.Duration) {
 		room, ok := getRoomFromAPs(listAP(c.WifiInterface))
 		if !ok {
 			fmt.Fprintln(os.Stderr, "could not estimate which room you are in")
@@ -27,8 +27,9 @@ func (c *Command) Run(args []string) int {
 		if err := Save(c.FirebaseURL, c.StudentID, room, time.Now()); err != nil {
 			fmt.Fprintln(os.Stderr, errors.Wrap(err, "could not save the room info"))
 		}
-		<-time.After(c.Duration)
 	}
+
+	return 0
 }
 
 func (c *Command) Help() string {

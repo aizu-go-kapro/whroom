@@ -43,6 +43,8 @@ The search paths for it:
 
 The `firebase_url` for UoA students: ref. [http://web-int.u-aizu.ac.jp/~s1230004/whroom.toml](http://web-int.u-aizu.ac.jp/~s1230004/whroom.toml)
 
+The `--config` option can be used to specify additional path.
+
 ### Make it daemon
 
 To logging your location periodicaly, an background job must be setup.
@@ -69,8 +71,10 @@ $ launchctl load /Library/LaunchDaemons/whroom.plist
 For Ubuntu or other Linux distributions using Systemd user, the `.service` file is provided.
 
 ```
+$ vi whroom.service  # Edit it to fit your environment.
 $ sudo systemctl link ./whroom.service
-$ sudo systemctl enable whroom.service
+$ sudo systemctl enable whroom
+$ sudo systemctl start whroom
 ```
 
 ## Authors

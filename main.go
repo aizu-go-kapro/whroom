@@ -23,7 +23,7 @@ func main() {
 	means, err := updater.SelectAvailableMeansFrom(
 		ctx,
 		brew.HomebrewMeans("aizu-go-kapro/whroom", "whroom"),
-		github.GitHubReleaseMeans("aizu-go-kapro", "whroom", github.TarDecompresser),
+		github.GitHubReleaseMeans("aizu-go-kapro", "whroom", github.TarGZIPDecompresser),
 	)
 	if err != nil {
 		fmt.Printf("could not create updater means. continue without update checking: %s\n", err)
@@ -44,14 +44,14 @@ func main() {
 		}
 	}
 
-	config, err := getConfig()
+	config, args, err := getConfig()
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
 
 	c := cli.NewCLI("whroom", version)
-	c.Args = os.Args[1:]
+	c.Args = args
 	c.Commands = map[string]cli.CommandFactory{
 		"get": func() (cli.Command, error) {
 			return &get.Command{
