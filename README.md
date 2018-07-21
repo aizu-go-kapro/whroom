@@ -20,6 +20,12 @@ $ whroom get s1230004
 $ brew install aizu-go-kapro/whroom
 ```
 
+#### Releases
+
+[Releases](https://github.com/aizu-go-kapro/whroom/releases).
+
+Homebrew or Releases binaries can be upgraded automatically so they are recommended.
+
 #### go get
 
 ```
