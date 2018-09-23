@@ -12,7 +12,7 @@ $ whroom get s1230004
 
 ## Setup
 
-### Get binary
+### 1. Get binary
 
 #### Homebrew
 
@@ -32,7 +32,7 @@ Homebrew or Releases binaries can be upgraded automatically so they are recommen
 $ go get github.com/aizu-go-kapro/whroom
 ```
 
-### Put config file
+### 2. Put config file
 
 Some preferences are needed.
 
@@ -51,7 +51,7 @@ The `firebase_url` for UoA students: ref. [http://web-int.u-aizu.ac.jp/~s1230004
 
 The `--config` option can be used to specify additional path.
 
-### Make it daemon
+### 3. Make it daemon
 
 To logging your location periodicaly, an background job must be setup.
 
